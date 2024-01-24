@@ -4,12 +4,12 @@ const baseUrl = 'http://localhost:3001/anecdotes'
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
-const getAll = async () => {
+export const getAll = async () => {
   const { data } = await axios.get(baseUrl)
   return data
 }
 
-const addAnecdote = async (content) => {
+export const addAnecdote = async (content) => {
   const newAnecdote = {
     content,
     id: getId(),
@@ -19,4 +19,9 @@ const addAnecdote = async (content) => {
   return data
 }
 
-export { getAll, addAnecdote }
+export const updateAnecdote = async (newAnecdote) => {
+  const { data } = await axios.put(`${baseUrl}/${newAnecdote.id}`, newAnecdote)
+  return data
+}
+
+export default { getAll, addAnecdote, updateAnecdote }
