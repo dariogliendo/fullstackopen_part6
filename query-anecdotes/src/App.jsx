@@ -3,8 +3,11 @@ import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { updateAnecdote } from './requests'
+import { useContext } from 'react'
+import NotificationContext from './notificationContext'
 
 const App = () => {
+  const [notification, dispatch] = useContext(NotificationContext)
   const queryClient = useQueryClient()
   const updateAnecdoteMutation = useMutation({
     mutationFn: updateAnecdote,
@@ -26,6 +29,13 @@ const App = () => {
       ...anecdote,
       votes: anecdote.votes + 1
     })
+    dispatch({
+      type: 'SET-NOTIFICATION',
+      payload: `You voted for ${anecdote.content}`
+    })
+    setTimeout(() => {
+      dispatch({ type: 'CLEAR-NOTIFICATION' })
+    }, 5000)
   }
   
   if (result.isLoading) return <div>Loading data...</div>
